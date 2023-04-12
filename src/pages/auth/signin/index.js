@@ -11,6 +11,7 @@ import { authenticate, isAuth } from 'context/AuthContext'
 const Signin = () => {
   const router = useRouter();
   const [message, setMessage] = useState(null)
+  const [loading, setLoading] = useState(false);
 
 
   const {
@@ -34,6 +35,7 @@ const Signin = () => {
   // }
 
   const onSubmit = values => {
+    setLoading(true)
     const email = values.email
     const password = values.password
     axios({
@@ -47,7 +49,10 @@ const Signin = () => {
       });
     })
     .catch(error => {
-      console.log('signup error', error.response.data)
+      console.log('signup error', error.response.data.error)
+      setMessage(error.response.data.error);
+      setLoading(false)
+
     })
   }
 
@@ -79,14 +84,12 @@ const Signin = () => {
                   </Link>
                 </div>
               </div>
-             {
-              message&& 
-              <div className='text-center bg-gray-100 rounded mt-4 py-2'>
-                {
-                  message
-                }
-              </div>
-             }
+              {
+                message&&
+                <div className='w-full bg-red-500 rounded py-2 mt-4 text-white text-center'>
+                  {message}
+                </div>
+              }
               <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl isInvalid={errors.email} className="mt-8">
                   <FormLabel htmlFor='email' fontSize='sm'>И-мейл хаяг</FormLabel>
@@ -147,7 +150,7 @@ const Signin = () => {
                 <div className='flex justify-end'>
                   <Link href="/auth/forget" className='text-md mt-2 text-blue-600'>Нууц үгээ мартсан уу ?</Link>
                 </div>
-                <Button mt={8} bg="green.500" colorScheme='blue.400' isLoading={isSubmitting} width='full' type='submit'>
+                <Button mt={8} bg="green.500" colorScheme='blue.400' isLoading={loading} width='full' type='submit'>
                   Нэвтрэх
                 </Button>
               </form>

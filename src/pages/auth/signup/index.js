@@ -180,15 +180,6 @@ const Signup = () => {
 
                 </FormControl>  
                 
-                <Button
-                bg="gray.100"
-                className="mt-10 w-full"
-                  variant={'outline'}
-                  leftIcon={<FcGoogle />}>
-                  <Center className=''>
-                    <Text>Google хаягаар бүртгүүлэх</Text>
-                  </Center>
-                </Button>
 
                 <Button mt={4} bg="green.500" colorScheme='blue.400' isLoading={isSubmitting} width='full' type='submit'>
                   Бүртгүүлэх

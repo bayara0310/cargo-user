@@ -61,10 +61,10 @@ const Navbar = () => {
                        <div>0 ₮</div>
                     </div>
                   </div>
-                   {
+                  {
                     load&&
                     <div>
-                    {
+                       {
                         isAuth() && (
                           <Link href='/profile/user'>
                             <div className='mr-5 flex items-center hover:text-gray-500'>
@@ -74,27 +74,19 @@ const Navbar = () => {
                           </Link>
                         )
                       }
-                      {
-                        !isAuth() && (
-                          <Link href='/auth/signin'>
+                    </div>
+                  }
+                   {
+                    !load&&
+                    <div>
+                       <Link href='/auth/signin'>
                             <div className='mr-5 flex items-center uppercase'>
                               <BiUser className='mr-1' color='black' size='16'/>
                               <div className='hover:text-gray-600'>Нэвтрэх</div>
                             </div>
                           </Link>
-                        )
-                      }
                     </div>
-                   }
-                    {/* <Link href="/cargo/signup" className="rounded px-3.5 py-2 m-1 overflow-hidden relative group cursor-pointer border font-medium border-indigo-600 text-indigo-600 text-white">
-                        <div className="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-indigo-600 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"></div>
-                        <div className="relative text-indigo-600 transition duration-300 group-hover:text-white ease">
-                            <div className='flex items-center'>
-                                <div className='mr-2'><BsTruck size='16'/></div>
-                                <h1>Каргогоо бүртгүүлэх</h1>
-                            </div>
-                        </div>
-                    </Link> */}
+                  }
                     <Link href="/cargo/signup" className="rounded-md px-3.5 py-2 bg-indigo-600 m-1 overflow-hidden relative group cursor-pointer border font-medium text-gray-100">
                         <div className="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-white top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"></div>
                         <div className="relative text-white transition duration-300 group-hover:text-indigo-600 ease">

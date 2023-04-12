@@ -1,11 +1,27 @@
 import Navbar from '@/components/Navbar'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {IoIosArrowDown} from 'react-icons/io'
 import Link from 'next/link'
 import { FiStar } from 'react-icons/fi'
 import CargoCard from '@/components/Cards/cargo'
+import axios from 'axios'
+import { cargostatus } from '@/url/uri'
 
 const All = () => {
+    const [cargo, setCargo] = useState([]);
+
+    useEffect(() => {
+        loadProfile();
+      }, []);
+
+    const loadProfile = async() => {
+        try{
+            const res = await axios.post(cargostatus, {cargo_status: "APPROVED"})
+            setCargo(res.data.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className='bg-gray-100 h-screen'>
         <Navbar/>
@@ -65,8 +81,14 @@ const All = () => {
                                     </div>
                                 </div>
 
-                                <div className='flex'>
-                                   <CargoCard/>
+                                <div className='grid grid-cols-3 gap-4'>
+                                    {
+                                        cargo.map((item, index) => {
+                                        return(
+                                            <CargoCard key={index} data={item}/>
+                                        )
+                                        })
+                                    }
                                 </div>
 
                             </div>

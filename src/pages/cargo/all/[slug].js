@@ -1,14 +1,70 @@
 import CargoComment from '@/components/Comment/cargoComment'
 import Navbar from '@/components/Navbar'
 import CargoOrderCard from '@/components/Sliders/cargoOrdersCard'
-import { AspectRatio, Button, Textarea } from '@chakra-ui/react'
-import React from 'react'
+import { cargoone, commentCargoUri, commentadduri } from '@/url/uri'
+import { AspectRatio, Button, Spinner, Textarea, useToast } from '@chakra-ui/react'
+import axios from 'axios'
+import { isAuth } from 'context/AuthContext'
+import { duration } from 'moment'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineFieldTime } from 'react-icons/ai'
-import { BsTelephone, BsTelephoneFill } from 'react-icons/bs'
+import { BsTelephone } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
-import { FaLocationArrow } from 'react-icons/fa'
 
-const Detail = () => {
+const Slug = () => {
+    const toast = useToast();
+    const router = useRouter()
+    const [cargo, setCargo] = useState({});
+    const url = router.query.slug
+    const [comment, setComment] = useState(null);
+    const [comload, setComload] = useState(false);
+    const [allcom, setAllcom] = useState([]);
+    const [ip, setIp] = useState("");
+
+    useEffect(() => {
+        loadProfile();
+        getUserIp();
+      }, [url]);
+
+    const loadProfile = async() => {
+        try{
+            const res = await axios.get(cargoone + `${url}`)
+            const resdata = await axios.get(commentCargoUri + `${url}`)
+            setCargo(res.data)
+            setAllcom(resdata.data.cargo);
+        }catch(err){
+            console.log(err, "aldaa")
+        }
+    }
+
+    const getUserIp = async () => {
+      const ip = await axios.get("https://ipapi.co/json");
+      console.log(ip.data.ip);
+      setIp(ip.data.ip);
+    };
+
+    const Submit = async() =>{
+      setComload(true)
+      try{
+        const res = await axios.post(commentadduri, {userid: isAuth()?._id, cargoid: cargo._id, comment:comment, ip: ip})
+        console.log(res.data);
+        setComload(false);
+        toast({
+          title: 'Амжилттай',
+          description: "Коммент илгээсэн таньд баярлалаа.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        loadProfile();
+        setComment("")
+      }catch(err){
+        setComload(false)
+        console.log(err);
+      }
+    }
+
   return (
     <div className='bg-gray-100 h-full'>
       <Navbar/>
@@ -19,12 +75,11 @@ const Detail = () => {
               <div>
                 <div className='bg-white w-full rounded-sm shadow-sm pb-20'>
                   <div className='flex p-4 justify-center'>
-                    <img className='' src='https://cdn5.shoppy.mn/img/24148/736x368xwebp/hatan1.jpg?h=bde033cfe4e42ebc7fecca5a0ea2364f154d8f0d'/>
+                    <img className='' src={cargo.cover_image}/>
                   </div>
                   <div className='mx-4 border-t mt-2'>
                     <h1 className='font-semibold mt-2 text-xl'>Илгээмжийн компаний тухай</h1>
-                    <p className='mt-2 text-sm'>Манай бааз нь Улаанбаатар хотоос 340 км, Архангай аймгийн төвөөс 130 км, Монголын эртний нийслэл 
-                      Хархорин хотоос 70 км, Түрэгийн Хөшөөт цайдмаас 22 км, Өгийнуур сумын төвөөс 30 км зайд оршино.</p>
+                    <p className='mt-2 text-sm'>{cargo.overview}</p>
                   </div>
                 </div>
               </div>
@@ -32,29 +87,29 @@ const Detail = () => {
 
             <div className='grid md:col-span-2 sm:grid-cols-1'>
              <div>
-
+              {/* aldaatai heseg */}
                 <div className='bg-white w-full rounded-sm xs:mt-4 md:mt-0'>
                   <div className='border-l border-gray-200 h-full bg-white rounded-sm'>
                     <div className='mx-8 py-2'>
-                      <h1 className='text-xl font-semibold uppercase'>Аригун карго</h1>
+                      <h1 className='text-xl font-semibold uppercase'>{cargo.cargo_name}</h1>
                       <div className='mt-4'>
 
                        <div className='flex items-center'>
-                        <CiLocationOn size='18' color=''/>
-                        <h1 className='ms ml-2 font-semibold'>Хаяг :</h1>
+                        <CiLocationOn size={18}/>
+                        <h1 className='ms ml-2 font-semibold'>Хаяг {':'}</h1>
                         <p className='ml-2'>Баруун 4 зам модны 2 т</p>
                        </div>
 
                        <div className='flex items-center'>
-                        <AiOutlineFieldTime size='18' color=''/>
-                        <h1 className='ms ml-2 font-semibold'>Цагийн хуваарь :</h1>
+                        <AiOutlineFieldTime size={18}/>
+                        <h1 className='ms ml-2 font-semibold'>Цагийн хуваарь {':'}</h1>
                         <p className='ml-2 text-sm'>Даваа - Баасан 09:00-18:00 Бямба 10:00 - 14:00</p>
                        </div>
 
                        <div className='flex items-center'>
-                        <BsTelephone size='16' color=''/>
-                        <h1 className='ms ml-2 font-semibold'>Утасны дугаар :</h1>
-                        <p className='ml-2 text-sm'>8080-8080, 9999-6666</p>
+                        <BsTelephone size={16}/>
+                        <h1 className='ms ml-2 font-semibold'>Утасны дугаар {':'}</h1>
+                        <p className='ml-2 text-sm'>{cargo.phone_number}</p>
                        </div>
 
                        <div>
@@ -70,13 +125,13 @@ const Detail = () => {
                   </div>
                 </div>
 
-                <div className='w-full bg-white rounded-sm'>
+                {/* <div className='w-full bg-white rounded-sm'>
                   <div className='border-l border-gray-200 h-full bg-white rounded-sm mt-1'>
                     <div className=''>
                       kk
                     </div>
                   </div>
-                </div>
+                </div> */}
 
              </div>
             </div>
@@ -84,13 +139,18 @@ const Detail = () => {
           </div>
 
           <div className='flex '>
-            <div className='bg-white w-full rounded mt-4 '>
+            <div className='bg-white w-full rounded mt-4'>
               <div className='p-4'>
                 <h1 className='text-xl font-semibold'>Сэтгэгдэл бичих</h1>
                 <div className='mt-4 border-t'>
                   <h1 className='mt-4 text-ms'>Сэтгэгдэл</h1>
-                  <Textarea/>
-                  <Button className='w-full mt-4'>Илгээх</Button>
+                  <Textarea onChange={e=> setComment(e.target.value)}/>
+                  {
+                    comload?
+                    <Button onClick={Submit} className='w-full mt-4'> <Spinner className='mr-2'/> Илгээж байна...</Button>
+                    :
+                    <Button onClick={Submit} className='w-full mt-4'>Илгээх</Button>
+                  }
                 </div>
               </div>
             </div>
@@ -98,13 +158,20 @@ const Detail = () => {
               <div className='p-4'>
                 <h1 className='text-xl font-semibold'>Сэтгэгдлүүд</h1>
                 <div className='mt-4 border-t'>
-                  <CargoComment/>
+                  {
+                    allcom.map((data, index) => {
+                      return(
+                        <CargoComment key={index} data={data}/>
+                      )
+                    })
+                  }
                 </div>
               </div>
             </div>
           </div>
 
             {/* map heseg */}
+            
           <div className='my-4'>
             <div>
             <AspectRatio ratio={16 / 9} className='h-96'>
@@ -120,4 +187,4 @@ const Detail = () => {
   )
 }
 
-export default Detail
+export default Slug

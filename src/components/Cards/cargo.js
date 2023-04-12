@@ -6,15 +6,16 @@ import {FaTruckMoving} from 'react-icons/fa'
 import Link from 'next/link'
 import { FiStar } from 'react-icons/fi'
 
-const CargoCard = () => {
+const CargoCard = ({data}) => {
+    console.log(data)
   return (
     <div className='group'>
         <div className='rounded bg-white w-72 mt-4 group-hover:shadow-xl'>
             <div>
-                <img className='rounded-t w-72 h-40' src='https://cdn3.shoppy.mn/spree/images/694206/large/Agaart-Square.jpg'/>
+                <img className='rounded-t w-72 h-40' src={data.cover_image}/>
             </div>
             <div className='mx-4 pb-8 pt-2'>
-                <Link href='/cargo/all/detail' className='font-semibold text-lg'>Андууд карго</Link>
+                <Link href={`/cargo/all/${data._id}`} className='font-semibold text-lg'>{data.cargo_name}</Link>
                 <div className='flex items-center'>
                 <FiStar color='yellow'/>
                 <FiStar color='yellow'/>
@@ -25,9 +26,9 @@ const CargoCard = () => {
                 <h1 className='ml-8'>{'(Сэтгэгдэл 24)'}</h1>
                 </div>
                 <div>
-                <div className='flex mt-2'>
+                <div className='flex mt-2 items-start'>
                     <MdLocationPin/>
-                    <p className='text-sm'>БГД Баруун 4 зам Gem palece баруун талд</p>
+                    <p className='text-sm'>{data.address}</p>
                     </div>
                 </div>
                 <div className='flex mt-4 items-center'>

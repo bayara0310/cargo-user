@@ -3,6 +3,7 @@ import Comments from '@/components/profile/comments';
 import Getorder from '@/components/profile/getorder';
 import My from '@/components/profile/my';
 import Order from '@/components/profile/order';
+import { userorderall } from '@/url/uri';
 import { Avatar } from '@chakra-ui/react'
 import axios from 'axios';
 import { getCookie, isAuth, signout } from 'context/AuthContext';
@@ -19,13 +20,15 @@ const User = () => {
         password:"",
         buttonText:"Submit",
         error: "",
-        role: ""
+        role: "",
       });
+    const [urt, setUrt] = useState(null)
 
     const token = getCookie('token')
 
     useEffect(() => {
         loadProfile();
+        userProducts();
       }, []);
 
       const loadProfile = () => {
@@ -45,11 +48,20 @@ const User = () => {
           console.log('error', error.response.data.error)
           if(error.response.status == 401){
             signout(() => {
-              router.push('/')
+              router.push('/auth/signin')
             });
           }
         })
       }
+
+      const userProducts = async() => {
+        try{
+            const res = await axios.get(userorderall + isAuth()?._id)
+            setUrt(res.data.order.length)
+        }catch(err){
+            console.log(err);
+        }
+    }
 
       const { name, email, password, buttonText, role } = values;
 
@@ -85,7 +97,7 @@ const User = () => {
                             <div className={route==2? 'border-l-4 mt-1 border-indigo-600 cursor-pointer font-semibold' : 'mt-1 cursor-pointer ml-1'} onClick={() => setRoute(2)}>
                                 <div className='flex items-center justify-between'>
                                    <h1 className={route==2? 'mx-4 py-1 text-indigo-600' : 'mx-4 py-1'}>Миний захиалгууд</h1>
-                                   <h1 className='mr-4 bg-gray-100 rounded-sm px-2 font-semibold text-gray-800'>0</h1>
+                                   <h1 className='mr-4 bg-gray-100 rounded-sm px-2 font-semibold text-gray-800'>{urt}</h1>
                                 </div>
                             </div>
                             <div className={route==3? 'border-l-4 mt-1 border-indigo-600 cursor-pointer font-semibold' : 'mt-1 cursor-pointer ml-1'} onClick={() => setRoute(3)}>
@@ -117,7 +129,7 @@ const User = () => {
                             route===1&&
                             <My/>
                         }
-                         {
+                        {
                             route===2&&
                             <Order/>
                         }
@@ -125,7 +137,7 @@ const User = () => {
                             route===3&&
                             <Getorder/>
                         }
-                         {
+                        {
                             route===4&&
                             <Comments/>
                         }

@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { message, Steps, theme } from 'antd';
 import { useState } from 'react';
 import { Button, Input } from '@chakra-ui/react';
 import LinkCopy from './getOrderItems/linkCopyModal';
+import axios from 'axios';
+import { orderadduri, cargostatus } from '@/url/uri';
+import { isAuth } from 'context/AuthContext';
 const steps = [
   {
     title: 'Барааны ерөнхий мэдээлэл',
@@ -10,13 +13,37 @@ const steps = [
   {
     title: 'Үнэ, хэмжээ',
   },
-  {
-    title: 'Төлбөр',
-  },
 ];
 
 const Getorder = () => {
     const [current, setCurrent] = useState(0);
+    const [data, setData]= useState({type:"", link:"", cargoid:"", size:"",color:"", price:"", number:"", userid:isAuth()?._id, date: new Date() })
+    const [cargos, setCargos] = useState([]);
+
+    useEffect(() => {
+        loadProfile();
+      }, []);
+
+    const loadProfile = async() => {
+        try{
+            const res = await axios.post(cargostatus, {cargo_status:"APPROVED"})
+            setCargos(res.data.data);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const submitData = async() => {
+        console.log(data);
+        try{
+            const res = await axios.post(orderadduri, data)
+            console.log(res)
+            message.success('Захиалга үүслээ та төлбөрөө төлснөөр захиалга баталгаажих болно !')
+        }catch(err){
+            console.log(err)
+        }
+    }
+
 
     const next = () => {
       setCurrent(current + 1);
@@ -42,18 +69,25 @@ const Getorder = () => {
                     <div className='mt-4 md:mx-20 xs:mx-4'>
                         <div>
                             <h1 className='text-lg mt-2'>Барааны төрөл</h1>
-                            <Input className='mt-1' placeholder='Цамц, өмд, усны сав гэх мэт ...'/>
+                            <Input onChange={(e) => setData({...data, type:e.target.value})} className='mt-1' placeholder='Цамц, өмд, усны сав гэх мэт ...'/>
                         </div>
                         <div className='mt-2'>
                             <div className='flex justify-between items-center'>
                                <h1 className='text-lg mt-2'>Барааны линк</h1>
                                <LinkCopy/>
                             </div>
-                            <Input className='mt-1' placeholder='Өөрийн захиалга хийж байгаа сайтын линкийг хуулж оруулах'/>
+                            <Input onChange={(e) => setData({...data, link:e.target.value})} className='mt-1' placeholder='Өөрийн захиалга хийж байгаа сайтын линкийг хуулж оруулах'/>
                         </div>
                         <div className='mt-4'>
-                            <h1 className='text-lg mt-2'>Барааны тоо ширхэг</h1>
-                            <Input className='mt-1' placeholder='Тухайн барааны тоо ширхэг'/>
+                            <h1 className='text-lg mt-2'>Карго сонгох</h1>
+                            <select  defaultValue="Карго сонгох" className='w-full rounded outline-none ring-1 py-2 text-sm mt-1'
+                            onChange={(e) => setData({...data, cargoid:e.target.value})}>
+                                {
+                                    cargos.map((item, index) => (
+                                        <option key={index} className='py-1 text-sm' value={item._id}>{item.cargo_name}</option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
                 }
@@ -62,31 +96,19 @@ const Getorder = () => {
                     <div className='mt-4 md:mx-20 xs:mx-4'>
                         <div>
                             <h1 className='text-lg mt-2'>Барааны Өнгө</h1>
-                            <Input className='mt-1' placeholder='Улаан, хар гэх мэт ...'/>
+                            <Input onChange={(e) => setData({...data, color:e.target.value})} className='mt-1' placeholder='Улаан, хар гэх мэт ...'/>
                         </div>
                         <div className='mt-4'>
                             <h1 className='text-lg mt-2'>Барааны Хэмжээ</h1>
-                            <Input className='mt-1' placeholder='XXL, 2m  гэх мэт ...'/>
+                            <Input onChange={(e) => setData({...data, size:e.target.value})} className='mt-1' placeholder='XXL, 2m  гэх мэт ...'/>
                         </div>
                         <div className='mt-4'>
                             <h1 className='text-lg mt-2'>Барааны нэгж үнэ</h1>
-                            <Input className='mt-1' placeholder='Тухайн барааны тоо ширхэг'/>
-                        </div>
-                    </div>
-                }
-                {
-                    current==2&&
-                    <div className='mt-4 md:mx-20 xs:mx-4'>
-                        <div className='mt-4'>
-                            <h1 className='text-lg mt-2'>Барааны нэгж үнэ</h1>
-                            <Input className='mt-1' placeholder='Нэг бараа авах үнийг оруулна уу !'/>
+                            <Input onChange={(e) => setData({...data, price:e.target.value})} className='mt-1' placeholder='Нэг бараа авах үнийг оруулна уу !'/>
                         </div>
                         <div className='mt-4'>
-                            <h1 className='text-lg mt-2'>Карго сонгох</h1>
-                            <select className='w-full rounded outline-none ring-1 py-2 text-sm mt-1'>
-                                <option>Сонгох</option>
-                                <option>ss</option>
-                            </select>
+                            <h1 className='text-lg mt-2'>Барааны тоо ширхэг</h1>
+                            <Input onChange={(e) => setData({...data, number:e.target.value})} className='mt-1' placeholder='Нэг бараа авах үнийг оруулна уу !'/>
                         </div>
                     </div>
                 }
@@ -104,7 +126,7 @@ const Getorder = () => {
                 </Button>
                 )}
                 {current === steps.length - 1 && (
-                <Button type="primary" onClick={() => message.success('Захиалга үүслээ та и-мейл хаягаа шалгана уу !')}>
+                <Button type="primary" onClick={submitData}>
                     Захиалга үүсгэх
                 </Button>
                 )}
