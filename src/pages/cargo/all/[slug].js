@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import CargoOrderCard from '@/components/Sliders/cargoOrdersCard'
 import { cargoone, commentCargoUri, commentadduri } from '@/url/uri'
 import { AspectRatio, Button, Spinner, Textarea, useToast } from '@chakra-ui/react'
+import { Rate } from 'antd'
 import axios from 'axios'
 import { isAuth } from 'context/AuthContext'
 import { duration } from 'moment'
@@ -13,7 +14,6 @@ import { BsTelephone } from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 
 const Slug = () => {
-    const toast = useToast();
     const router = useRouter()
     const [cargo, setCargo] = useState({});
     const url = router.query.slug
@@ -21,6 +21,8 @@ const Slug = () => {
     const [comload, setComload] = useState(false);
     const [allcom, setAllcom] = useState([]);
     const [ip, setIp] = useState("");
+    const toast = useToast();
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         loadProfile();
@@ -40,15 +42,22 @@ const Slug = () => {
 
     const getUserIp = async () => {
       const ip = await axios.get("https://ipapi.co/json");
-      console.log(ip.data.ip);
       setIp(ip.data.ip);
     };
 
     const Submit = async() =>{
+      if(!isAuth()){
+        return  toast({
+          title: `Та нэвтэрч орсноор сэтгэгдэл бичих боломжтой.`,
+          position: 'top',
+          isClosable: true,
+          status: 'warning',
+          duration: 9000,
+        })
+      }
       setComload(true)
       try{
         const res = await axios.post(commentadduri, {userid: isAuth()?._id, cargoid: cargo._id, comment:comment, ip: ip})
-        console.log(res.data);
         setComload(false);
         toast({
           title: 'Амжилттай',
@@ -92,6 +101,10 @@ const Slug = () => {
                   <div className='border-l border-gray-200 h-full bg-white rounded-sm'>
                     <div className='mx-8 py-2'>
                       <h1 className='text-xl font-semibold uppercase'>{cargo.cargo_name}</h1>
+                      <div className='mt-4 flex items-center justify-start'>
+                        <h1 className='text-sm mr-4'>Үнэлгээ өгөх</h1>
+                        <Rate onChange={setValue} value={value}/>
+                      </div>
                       <div className='mt-4'>
 
                        <div className='flex items-center'>

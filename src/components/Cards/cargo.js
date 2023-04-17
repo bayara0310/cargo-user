@@ -1,29 +1,52 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {MdLocationPin} from 'react-icons/md'
 import {RiPlaneFill, RiShipFill} from 'react-icons/ri'
 import {FaTruckMoving} from 'react-icons/fa'
 import Link from 'next/link'
-import { FiStar } from 'react-icons/fi'
+import { GiRailRoad } from 'react-icons/gi'
+import { Rate } from 'antd'
+import axios from 'axios'
+import { commentCargoUri } from '@/url/uri'
 
 const CargoCard = ({data}) => {
-    console.log(data)
+    const [value, setValue] = useState(4.5);
+    const land = data.type.filter(type => type === "LAND");
+    const water = data.type.filter(type => type === "WATER");
+    const rail = data.type.filter(type => type === "RAILROAD");
+    const air = data.type.filter(type => type === "AIR");
+    const [com, setCom] = useState()
+
+    useEffect(() => {
+        loadProfile();
+      }, []);
+
+    const loadProfile = async() => {
+        try{
+            const res = await axios.get(commentCargoUri + `${data._id}`)
+            setCom(res.data.cargo.length)
+        }catch(err){
+            console.log(err, "aldaa")
+        }
+    }
+
+
   return (
-    <div className='group'>
+    <div className='group flex justify-center'>
         <div className='rounded bg-white w-72 mt-4 group-hover:shadow-xl'>
             <div>
                 <img className='rounded-t w-72 h-40' src={data.cover_image}/>
             </div>
             <div className='mx-4 pb-8 pt-2'>
                 <Link href={`/cargo/all/${data._id}`} className='font-semibold text-lg'>{data.cargo_name}</Link>
-                <div className='flex items-center'>
+                <div className=''>
+                {/* <FiStar color='yellow'/>
                 <FiStar color='yellow'/>
                 <FiStar color='yellow'/>
                 <FiStar color='yellow'/>
-                <FiStar color='yellow'/>
-                <FiStar color='yellow'/>
-                <h1 className='ml-2'>5</h1>
-                <h1 className='ml-8'>{'(Сэтгэгдэл 24)'}</h1>
+                <FiStar color='yellow'/> */}
+                    <Rate allowHalf value={value} disabled/>
+                    <h1 className='text-sm'>Нийт сэтгэгдэл {com}</h1>
                 </div>
                 <div>
                 <div className='flex mt-2 items-start'>
@@ -33,11 +56,26 @@ const CargoCard = ({data}) => {
                 </div>
                 <div className='flex mt-4 items-center'>
                     <h1 className='text-sm mr-4'>Тээвэрлэлтийн төрөл :</h1>
-                    <RiPlaneFill color='#4F46E5'/>
-                    <FaTruckMoving color='#4F46E5' className='mx-2'/>
-                    <RiShipFill color='#4F46E5'/>
+                    {
+                        air.length > 0 &&
+                        <RiPlaneFill color='#4F46E5' className='mx-1'/>
+                    }
+                    {
+                        land.length > 0 &&
+                        <FaTruckMoving color='#4F46E5' className='mx-1'/>
+                    }
+                    {
+                        water.length > 0 &&
+                        <RiShipFill color='#4F46E5' className='mx-1'/>
+                    }
+                    {
+                        rail.length > 0 &&
+                        <GiRailRoad color='#4F46E5' className='mx-1'/>
+                    }
                 </div>
-                <div className='text-center bg-gray-200 rounded-md py-1 mt-4 group-hover:bg-indigo-600 group-hover:text-white cursor-pointer'>Бараа захиалах</div>
+                <Link href='/profile/user'>
+                    <div className='text-center bg-gray-200 rounded-md py-1 mt-4 group-hover:bg-indigo-600 group-hover:text-white cursor-pointer'>Бараа захиалах</div>
+                </Link>
             </div>
         </div>
     </div>

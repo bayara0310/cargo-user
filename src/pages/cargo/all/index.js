@@ -2,24 +2,46 @@ import Navbar from '@/components/Navbar'
 import React, { useEffect, useState } from 'react'
 import {IoIosArrowDown} from 'react-icons/io'
 import Link from 'next/link'
-import { FiStar } from 'react-icons/fi'
 import CargoCard from '@/components/Cards/cargo'
 import axios from 'axios'
-import { cargostatus } from '@/url/uri'
+import { cargostatus, filtersAllCargo } from '@/url/uri'
 
 const All = () => {
     const [cargo, setCargo] = useState([]);
+    const [nation, setNation] = useState([]);
+    const [type, setType] = useState([]);
 
     useEffect(() => {
         loadProfile();
-      }, []);
+      }, [nation, type]);
 
     const loadProfile = async() => {
+        console.log(type)
         try{
-            const res = await axios.post(cargostatus, {cargo_status: "APPROVED"})
-            setCargo(res.data.data)
+            const res = await axios.post(filtersAllCargo, {nation: nation, type: type });
+            setCargo(res.data.cargo)
         }catch(err){
             console.log(err)
+        }
+    }
+
+    const typeset = (value) => {
+        if (type.includes(value)) {
+          setType((prevValues) =>
+            prevValues.filter((prevValue) => prevValue !== value)
+          );
+        } else {
+            setType((prevValues) => [...prevValues, value]);
+        }
+      };
+
+    const nationset = (value) => {
+          if (nation.includes(value)) {
+          setNation((prevValues) =>
+            prevValues.filter((prevValue) => prevValue !== value)
+          );
+        } else {
+            setNation((prevValues) => [...prevValues, value]);
         }
     }
   return (
@@ -35,34 +57,93 @@ const All = () => {
                                 <div className='p-4'>
 
                                     <div className='bg-gray-100 rounded py-2 w-full'>
-                                       <h1 className='ml-4 font-semibold'>Ангилал</h1>
+                                       <h1 className='ml-4 font-semibold'>Улсууд</h1>
                                     </div>
 
                                     <div className='ml-8 mt-4 text-ms'>
-                                        <h1 className='mt-2 font-semibold cursor-pointer'>Хятад</h1>
-                                        <h1 className='mt-2'>Америк</h1>
-                                        <h1 className='mt-2'>Герман</h1>
-                                        <h1 className='mt-2'>Солонгос</h1>
+                                        <div className='flex items-center'>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={nation.includes("CHINA")}
+                                                onChange={() => nationset("CHINA")}
+                                                />
+                                           <h1 className='ml-2'>Хятад</h1>
+                                        </div>
+                                        <div className='flex items-center mt-2'>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={nation.includes("USA")}
+                                                onChange={() => nationset("USA")}
+                                                />
+                                           <h1 className='ml-2'>Америк</h1>
+                                        </div>
+                                        <div className='flex items-center mt-2'>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={nation.includes("GER")}
+                                                onChange={() => nationset("GER")}
+                                                />
+                                           <h1 className='ml-2'>Герман</h1>
+                                        </div>
+                                        <div className='flex items-center mt-2'>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={nation.includes("KOR")}
+                                                onChange={() => nationset("KOR")}
+                                                />
+                                           <h1 className='ml-2'>Солонгос</h1>
+                                        </div>
                                     </div>
 
                                     <div className='bg-gray-100 rounded py-2 w-full flex items-center justify-between mt-4'>
                                        <h1 className='ml-4 font-semibold'>Ангилал</h1>
-                                       <IoIosArrowDown className='mr-2'/>
+                                       {/* <IoIosArrowDown className='mr-2'/> */}
                                     </div>
                                     
                                     <div className='ml-8 mt-4 text-ms'>
+
                                         <div className='flex items-center'>
-                                           <input type='checkbox'/>
-                                           <h1 className='ml-2'>Галт тэрэг</h1>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={type.includes("RAILROAD")}
+                                                onChange={() => typeset("RAILROAD")}
+                                                />
+                                           <h1 className='ml-2'>Төмөр зам</h1>
                                         </div>
                                         <div className='flex items-center mt-2'>
-                                           <input type='checkbox'/>
-                                           <h1 className='ml-2'>Галт тэрэг</h1>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={type.includes("AIR")}
+                                                onChange={() => typeset("AIR")}
+                                                />
+                                           <h1 className='ml-2'>Агаарын</h1>
                                         </div>
                                         <div className='flex items-center mt-2'>
-                                           <input type='checkbox'/>
-                                           <h1 className='ml-2'>Галт тэрэг</h1>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={type.includes("LAND")}
+                                                onChange={() => typeset("LAND")}
+                                                />
+                                           <h1 className='ml-2'>Газрын</h1>
                                         </div>
+                                        <div className='flex items-center mt-2'>
+                                           <input
+                                                className='cursor-pointer'
+                                                type="checkbox"
+                                                checked={type.includes("WATER")}
+                                                onChange={() => typeset("WATER")}
+                                                />
+                                           <h1 className='ml-2'>Усан тээвэр</h1>
+                                        </div>
+
+
                                     </div>
 
                                 </div>
@@ -73,15 +154,15 @@ const All = () => {
 
                                 <div className='flex items-center bg-white w-full rounded-sm ring-[0.5px] ring-gray-300 py-2 px-3'>
                                     <h1 className='font-semibold text-ms'>Эрэмбэлэх :</h1>
-                                    <div className='text-sm ml-4 border-b-4 border-gray-600 px-2 cursor-pointer'>
-                                        <h1 className='py-2'>Энгийн</h1>
+                                    {/* <div className='text-sm ml-4 px-2 cursor-pointer'>
+                                        <h1 className='py-2'>Хамгийн олон комменттой</h1>
                                     </div>
                                     <div className='text-sm ml-4 px-2 cursor-pointer'>
-                                        <h1 className='py-2'>Хямдралтай</h1>
-                                    </div>
+                                        <h1 className='py-2'>Хамгийн олон одтой</h1>
+                                    </div> */}
                                 </div>
 
-                                <div className='grid grid-cols-3 gap-4'>
+                                <div className='grid xl:grid-cols-3 md:grid-cols-1 gap-2'>
                                     {
                                         cargo.map((item, index) => {
                                         return(

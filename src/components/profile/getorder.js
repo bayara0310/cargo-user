@@ -108,7 +108,7 @@ const Getorder = () => {
                         </div>
                         <div className='mt-4'>
                             <h1 className='text-lg mt-2'>Барааны тоо ширхэг</h1>
-                            <Input onChange={(e) => setData({...data, number:e.target.value})} className='mt-1' placeholder='Нэг бараа авах үнийг оруулна уу !'/>
+                            <Input onChange={(e) => setData({...data, number:e.target.value})} className='mt-1' placeholder='Авах тоо ширхэг'/>
                         </div>
                     </div>
                 }

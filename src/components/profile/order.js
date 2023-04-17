@@ -12,32 +12,30 @@ import {
   TableContainer
 } from '@chakra-ui/react'
 import OrderHeader from './orderitems/orderheader'
-import { userorderall } from '@/url/uri';
+import { BARAA, userorderall, userorderfilteruri } from '@/url/uri';
 import axios from 'axios';
 import { isAuth } from 'context/AuthContext';
 import moment from 'moment'
+import OrderDetailModal from './Modals/orderDetail';
 
 const Order = () => {
   const toast = useToast()
-  const [route, setRoute] = useState(1);
+  const [route, setRoute] = useState(false);
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
     loadProfile();
-  }, []);
+  }, [route]);
 
 const loadProfile = async() => {
     try{
-        const res = await axios.get(userorderall + isAuth()?._id)
-        setOrder(res.data.order);
-        console.log(res.data.order)
+        const res = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: route});
+        setOrder(res.data.cargo);
     }catch(err){
         console.log(err);
     }
 }
 
-  const text = "https://www.amazon.com/s/ref=sbl_swt_0_0?k=Gaming+headsets+with+microphone&pd_rd_w=MZI6u&content-id=amzn1.sym.642826b6-ec15-4780-9b09-8199fa7d0216:amzn1.sym.642826b6-ec15-4780-9b09-8199fa7d0216&pf_rd_p=642826b6-ec15-4780-9b09-8199fa7d0216&pf_rd_r=X7CYCQD5MQPW5JPVKYR6&pd_rd_wg=RqOI3&pd_rd_r=73225477-1f71-4fd6-baa2-78d3fc5305aa&qid=1678936051"; 
-  const result = text.slice(0, 18);
   return (
     <div className='w-full'>
       <div className='my-4 mx-2'>
@@ -47,19 +45,19 @@ const loadProfile = async() => {
 
       <div className='flex justify-between flex-wrap'>
         <div className='flex mt-4'>
-          <div onClick={() => setRoute(1)} className={route==1?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
+          <div onClick={() => setRoute(false)} className={route== false ?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Бүгд</h1>
           </div>
-          <div onClick={() => setRoute(2)} className={route==2?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
+          <div onClick={() => setRoute(BARAA.REGISTERED)} className={route==BARAA.REGISTERED?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Илгээсэн</h1>
           </div>
-          <div onClick={() => setRoute(3)} className={route==3?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
+          <div onClick={() => setRoute(BARAA.APPROVED)} className={route==BARAA.APPROVED?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Баталгаажсан</h1>
           </div>
-          <div onClick={() => setRoute(4)} className={route==4?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
+          <div onClick={() => setRoute(BARAA.RECEIVED)} className={route==BARAA.RECEIVED?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Хүлээн авсан</h1>
           </div>
-          <div onClick={() => setRoute(5)} className={route==5?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
+          <div onClick={() => setRoute(BARAA.CAME)} className={route==BARAA.CAME?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Ирсэн</h1>
           </div>
         </div>
@@ -90,6 +88,7 @@ const loadProfile = async() => {
                       <Th>Огноо</Th>
                       <Th>төлбөр</Th>
                       <Th></Th>
+                      <Th></Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -100,7 +99,7 @@ const loadProfile = async() => {
                           <Td>{order.type}</Td>
                           <Td>
                             <div className='flex justify-between items-center'>
-                            {result}...
+                              {order.link.slice(0, 18)} ...
                             <div
                             onClick={() =>
                               toast({
@@ -126,20 +125,35 @@ const loadProfile = async() => {
                           <Td>{order.number}</Td>
                           <Td>{order.price}</Td>
                           <Td>{moment(order.date).format("L")}</Td>
-                          <Td>25.000</Td>
+                          <Td>{order.price}</Td>
                           <Td>
                             {
-                              order.status == "REGISTERED"&&
+                              order.status == BARAA.REGISTERED&&
                               <div className='bg-gray-400 rounded px-2 py-1 text-sm text-white text-center'>
-                                Бүртгүүлэсэн
+                                Илгээсэн
                               </div>
                             }
                             {
-                              order.status == "APPROVE"&&
-                              <div className='bg-gray-400 rounded px-2 py-1 text-sm text-white text-center'>
+                              order.status == BARAA.APPROVED&&
+                              <div className='bg-amber-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Баталгаажсан
                               </div>
                             }
+                            {
+                              order.status == BARAA.RECEIVED&&
+                              <div className='bg-pink-400 rounded px-2 py-1 text-sm text-white text-center'>
+                                Хүлээн авсан
+                              </div>
+                            }
+                            {
+                              order.status == BARAA.CAME&&
+                              <div className='bg-green-400 rounded px-2 py-1 text-sm text-white text-center'>
+                                Ирсэн
+                              </div>
+                            }
+                          </Td>
+                          <Td>
+                            <OrderDetailModal data={order}/>
                           </Td>
                         </Tr>
                         )
