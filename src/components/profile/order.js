@@ -28,9 +28,11 @@ const Order = () => {
   }, [route]);
 
 const loadProfile = async() => {
+  console.log("aa")
     try{
         const res = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: route});
         setOrder(res.data.cargo);
+        console.log(res.data.cargo)
     }catch(err){
         console.log(err);
     }
@@ -128,27 +130,33 @@ const loadProfile = async() => {
                           <Td>{order.price}</Td>
                           <Td>
                             {
-                              order.status == BARAA.REGISTERED&&
+                              order.status === BARAA.REGISTERED&&
                               <div className='bg-gray-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Илгээсэн
                               </div>
                             }
                             {
-                              order.status == BARAA.APPROVED&&
+                              order.status === BARAA.APPROVED&&
                               <div className='bg-amber-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Баталгаажсан
                               </div>
                             }
                             {
-                              order.status == BARAA.RECEIVED&&
+                              order.status === BARAA.RECEIVED&&
                               <div className='bg-pink-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Хүлээн авсан
                               </div>
                             }
                             {
-                              order.status == BARAA.CAME&&
+                              order.status === BARAA.CAME&&
                               <div className='bg-green-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Ирсэн
+                              </div>
+                            }
+                            {
+                              order.status === BARAA.CONFIRM&
+                              <div className='bg-green-400 rounded px-2 py-1 text-sm text-white text-center'>
+                                Эзэндээ очсон
                               </div>
                             }
                           </Td>

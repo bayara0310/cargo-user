@@ -14,7 +14,6 @@ import { FiMoreHorizontal } from 'react-icons/fi'
 import moment from 'moment'
 
 const OrderDetailModal = ({data}) => {
-    console.log(data, "hha")
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
