@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { GiRailRoad } from 'react-icons/gi'
 import { Rate } from 'antd'
 import axios from 'axios'
-import { commentCargoUri } from '@/url/uri'
+import { commentCargoUri, ratinguri, ratinguriget } from '@/url/uri'
 
 const CargoCard = ({data}) => {
     const [value, setValue] = useState(4.5);
@@ -24,7 +24,10 @@ const CargoCard = ({data}) => {
     const loadProfile = async() => {
         try{
             const res = await axios.get(commentCargoUri + `${data._id}`)
+            const ress = await axios.get(ratinguriget + `${data._id}`)
             setCom(res.data.cargo.length)
+            const pays = (ress.data.reduce((a,v) =>  a = a + v.rating , 0 ).toLocaleString() / ress.data.length)
+            setValue(pays)
         }catch(err){
             console.log(err, "aldaa")
         }
@@ -33,9 +36,9 @@ const CargoCard = ({data}) => {
 
   return (
     <div className='group flex justify-center'>
-        <div className='rounded bg-white w-72 mt-4 group-hover:shadow-xl'>
+        <div className='rounded-xl bg-white w-full mt-4 group-hover:shadow-2xl'>
             <div>
-                <img className='rounded-t w-72 h-40' src={data.cover_image}/>
+                <img className='rounded-t w-full h-40' src={data.cover_image}/>
             </div>
             <div className='mx-4 pb-8 pt-2'>
                 <Link href={`/cargo/all/${data._id}`} className='font-semibold text-lg'>{data.cargo_name}</Link>

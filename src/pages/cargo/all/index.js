@@ -53,7 +53,7 @@ const All = () => {
                 <div className='mt-4'>
                     <div className='grid md:grid-cols-4 xs:grid-cols-1'>
                         <div className='grid col-span-1 mx-2'>
-                            <div className='rounded-sm ring-[0.5px] ring-gray-300 bg-white w-full '>
+                            <div className='rounded-sm ring-[0.5px] ring-gray-300 bg-white w-full h-96'>
                                 <div className='p-4'>
 
                                     <div className='bg-gray-100 rounded py-2 w-full'>
@@ -143,7 +143,6 @@ const All = () => {
                                            <h1 className='ml-2'>Усан тээвэр</h1>
                                         </div>
 
-
                                     </div>
 
                                 </div>
@@ -162,7 +161,7 @@ const All = () => {
                                     </div> */}
                                 </div>
 
-                                <div className='grid xl:grid-cols-3 md:grid-cols-1 gap-2'>
+                                <div className='grid xl:grid-cols-3 md:grid-cols-2 gap-2'>
                                     {
                                         cargo.map((item, index) => {
                                         return(

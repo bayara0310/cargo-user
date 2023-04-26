@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip } from 'antd';
-import { useToast } from '@chakra-ui/react';
+import { Spinner, useToast } from '@chakra-ui/react';
 import {
   Table,
   Thead,
@@ -22,19 +22,21 @@ const Order = () => {
   const toast = useToast()
   const [route, setRoute] = useState(false);
   const [order, setOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadProfile();
   }, [route]);
 
 const loadProfile = async() => {
-  console.log("aa")
+  setLoading(true)
     try{
         const res = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: route});
         setOrder(res.data.cargo);
-        console.log(res.data.cargo)
+        setLoading(false)
     }catch(err){
         console.log(err);
+        setLoading(false)
     }
 }
 
@@ -64,27 +66,40 @@ const loadProfile = async() => {
           </div>
         </div>
 
-        <div className='mt-4'>
+        {/* <div className='mt-4'>
           <select className='rounded px-4 py-1 ring-1 ring-gray-200 outline-none'>
             <option>Сүүлийх нь эхэндээ</option>
-            <option>kk</option>
-            <option>kk</option>
+            <option>Эхнийх нь сүүлдээ</option>
           </select>
-        </div>
+        </div> */}
 
       </div>
 
       <div className='bg-white rounded mt-2 w-full'>
         <div className='py-4 mx-4'>
           <div>
-              <TableContainer>
+             {
+              loading ?
+              <div className='flex justify-center'>
+                <Spinner/>
+              </div>
+              :
+              <div>
+                 {
+                order.length === 0 ?
+                <div className='flex justify-center items-center'>
+                  <img src='/../icons/emp.png'/>
+                  <h1 className='ml-4 font-semibold opacity-90'>Захиалга байхгүй байна</h1>
+                </div>
+                :
+                <TableContainer>
                 <Table variant='simple' size='sm'>
                   <Thead bgColor='gray.100'>
                     <Tr>
                       <Th>Барааны төрөл</Th>
                       <Th>Линк</Th>
-                      <Th>Өнгө</Th>
-                      <Th>Хэмжээ</Th>
+                      {/* <Th>Өнгө</Th>
+                      <Th>Хэмжээ</Th> */}
                       <Th>Тоо</Th>
                       <Th>Үнэ</Th>
                       <Th>Огноо</Th>
@@ -122,8 +137,8 @@ const loadProfile = async() => {
                             </div>
                             
                           </Td>
-                          <Td>{order.color}</Td>
-                          <Td>{order.size}</Td>
+                          {/* <Td>{order.color}</Td>
+                          <Td>{order.size}</Td> */}
                           <Td>{order.number}</Td>
                           <Td>{order.price}</Td>
                           <Td>{moment(order.date).format("L")}</Td>
@@ -154,7 +169,7 @@ const loadProfile = async() => {
                               </div>
                             }
                             {
-                              order.status === BARAA.CONFIRM&
+                              order.status === BARAA.CONFIRM&&
                               <div className='bg-green-400 rounded px-2 py-1 text-sm text-white text-center'>
                                 Эзэндээ очсон
                               </div>
@@ -170,6 +185,9 @@ const loadProfile = async() => {
                   </Tbody>
                 </Table>
               </TableContainer>
+              }
+              </div>
+             }
           </div>
         </div>
       </div>

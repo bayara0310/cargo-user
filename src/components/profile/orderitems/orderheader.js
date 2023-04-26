@@ -1,6 +1,34 @@
-import React from 'react'
+import { BARAA, userorderfilteruri } from '@/url/uri';
+import axios from 'axios';
+import { isAuth } from 'context/AuthContext';
+import React, { useEffect, useState } from 'react'
 
 const OrderHeader = () => {
+  const [reg, setReg] = useState()
+  const [rec, setRec] = useState()
+  const [app, setApp] = useState()
+  const [came, setCame] = useState()
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async() => {
+      try{
+          const res = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: BARAA.REGISTERED});
+          const ress = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: BARAA.RECEIVED});
+          const resss = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: BARAA.APPROVED});
+          const ressss = await axios.post(userorderfilteruri, {id: isAuth()?._id, status: BARAA.CAME});
+          
+          setRec(ress.data.cargo.length)
+          setReg(res.data.cargo.length)
+          setApp(resss.data.cargo.length)
+          setCame(ressss.data.cargo.length)
+      }catch(err){
+          console.log(err);
+      }
+  }
+
   return (
     <div className='hidden sm:block'>
         <div className='flex w-full'>
@@ -12,7 +40,7 @@ const OrderHeader = () => {
           </div>
           <div className='ml-3 xs:text-sm md:text-sm'>
             <h1 className='font-semibold text-gray-800'>Илгээсэн</h1>
-            <h1 className='text-lg text-gray-600'>10</h1>
+            <h1 className='text-lg text-gray-600'>{reg}</h1>
           </div>
         </div>
 
@@ -25,7 +53,7 @@ const OrderHeader = () => {
           </div>
           <div className='ml-3 xs:text-sm md:text-sm'>
             <h1 className='font-semibold text-yellow-800'>Баталгаажсан</h1>
-            <h1 className='text-lg text-gray-600'>10</h1>
+            <h1 className='text-lg text-gray-600'>{app}</h1>
           </div>
         </div>
 
@@ -38,7 +66,7 @@ const OrderHeader = () => {
           </div>
           <div className='ml-3 xs:text-sm md:text-sm'>
             <h1 className='font-semibold text-pink-800'>Хүлээн авсан</h1>
-            <h1 className='text-lg text-gray-600'>10</h1>
+            <h1 className='text-lg text-gray-600'>{rec}</h1>
           </div>
         </div>
 
@@ -51,7 +79,7 @@ const OrderHeader = () => {
           </div>
           <div className='ml-3 xs:text-sm md:text-sm'>
             <h1 className='font-semibold text-green-800'>Ирсэн</h1>
-            <h1 className='text-lg text-gray-600'>10</h1>
+            <h1 className='text-lg text-gray-600'>{came}</h1>
           </div>
         </div>
 

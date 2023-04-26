@@ -15,6 +15,8 @@ export const commentCargoUri = mainUrl + "/api/comment/cargo/";
 export const commentUserUri = mainUrl + "/api/comment/user/";
 export const commentUserFindUri = mainUrl + "/api/comment/user/find/";
 export const filtersAllCargo = mainUrl + "/api/cargo/filter/typen"
+export const ratinguri = mainUrl + "/api/rating/add"
+export const ratinguriget = mainUrl + "/api/rating/"
 
 
 export const TYPES = {

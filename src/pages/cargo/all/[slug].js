@@ -1,12 +1,13 @@
 import CargoComment from '@/components/Comment/cargoComment'
 import Navbar from '@/components/Navbar'
 import CargoOrderCard from '@/components/Sliders/cargoOrdersCard'
-import { cargoone, commentCargoUri, commentadduri } from '@/url/uri'
+import { cargoone, commentCargoUri, commentadduri, ratinguri } from '@/url/uri'
 import { AspectRatio, Button, Spinner, Textarea, useToast } from '@chakra-ui/react'
 import { Rate } from 'antd'
 import axios from 'axios'
 import { isAuth } from 'context/AuthContext'
 import { duration } from 'moment'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { AiOutlineFieldTime } from 'react-icons/ai'
@@ -28,6 +29,13 @@ const Slug = () => {
         loadProfile();
         getUserIp();
       }, [url]);
+
+      useEffect(() => {
+        if(value === 0){
+        }else{
+          haha();
+        }
+      }, [value]);
 
     const loadProfile = async() => {
         try{
@@ -52,6 +60,7 @@ const Slug = () => {
           position: 'top',
           isClosable: true,
           status: 'warning',
+          position: "top",
           duration: 9000,
         })
       }
@@ -64,6 +73,7 @@ const Slug = () => {
           description: "Коммент илгээсэн таньд баярлалаа.",
           status: 'success',
           duration: 9000,
+          position: "top",
           isClosable: true,
         })
         loadProfile();
@@ -71,6 +81,33 @@ const Slug = () => {
       }catch(err){
         setComload(false)
         console.log(err);
+      }
+    }
+    
+    const haha = async() => {
+      try{
+          const res = await axios.post(ratinguri, { userid: isAuth()?._id, cargoid: cargo._id, rating: value})
+          console.log(res.status)
+          if(res.status === 200){
+            return toast({
+              title: 'Амжилттай',
+              description: "Та амжилттай үнэлгээ өглөө баярлалаа.",
+              status: 'success',
+              duration: 7000,
+              isClosable: true,
+              position: "top"
+            })
+          }
+      }catch(err){
+        setValue(0)
+            return toast({
+              title: 'Уучлаарай',
+              description: "Та энэ каргонд үнэлгээ өгсөн байна.",
+              status: 'warning',
+              duration: 7000,
+              isClosable: true,
+              position: "top"
+            })
       }
     }
 
@@ -132,7 +169,9 @@ const Slug = () => {
 
                       </div>
                       <div className='mt-8'>
+                      <Link href='/profile/user'>
                         <div className='bg-indigo-600 text-white rounded py-2 w-full text-center font-semibold uppercase hover:bg-indigo-400 cursor-pointer'>Бараа захиалах</div>
+                      </Link>
                       </div>
                     </div>
                   </div>
