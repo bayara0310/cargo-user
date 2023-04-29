@@ -27,7 +27,8 @@ module.exports = {
       '5xl': '3.052rem',
     },
     fontFamily: {
-      'Nunito':'Nunito'
+      'Lato': 'Lato',
+      'Nunito':'Nunito',
     },
     screens: {
       'xs': '100px',
@@ -50,7 +51,7 @@ module.exports = {
     },
     backgroundImage: {
       'uilchilgee': "url('/img/uilchilgee.png')",
-      'cargobg': "url('/background/bg.jfif')",
+      'footer-back': "url('/background/back.png')",
       'eart': "url('/background/eart.jpg')",
       'earth': "url('/background/earth.jpg')",
       'earth1': "url('/background/earth1.jpg')",

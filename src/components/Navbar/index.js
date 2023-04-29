@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import {BsTruck} from 'react-icons/bs'
 import {BiUser} from 'react-icons/bi'
 import {SlWallet} from 'react-icons/sl'
-import {AiFillPhone, AiFillInstagram, AiFillFacebook, AiFillTwitterCircle, AiFillYoutube} from 'react-icons/ai'
+import {AiFillPhone, AiFillInstagram, AiFillFacebook, AiFillTwitterCircle, AiFillYoutube, AiOutlineMenu} from 'react-icons/ai'
 import { isAuth } from 'context/AuthContext'
+import { Button, Dropdown, Space } from 'antd';
 
 const Navbar = () => {
   const [load, setLoad] = useState(false)
@@ -18,6 +19,41 @@ const Navbar = () => {
       setLoad(true)
     }
   }
+  const items = [
+  {
+    key: '1',
+    label: (
+      <div>
+        <Link href='/'>Нүүр</Link>
+      </div>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <div className=''>
+        <Link className='' href='/auth/signin'>Нэвтрэх</Link>
+      </div>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <div>
+        <Link href='/auth/signup'>Бүртгүүлэх</Link>
+      </div>
+    ),
+  },
+  {
+    key: '4',
+    label: (
+      <div>
+        <Link href='/profile/user'>Миний хуудас</Link>
+      </div>
+    ),
+  },
+
+];
 
   return (
     <div className='bg-white shadow-md'>
@@ -99,6 +135,21 @@ const Navbar = () => {
                 </div>
 
                </div>
+            </div>
+           </div>
+           <div className='md:hidden sm:block'>
+            <div className='py-4 mx-8 flex items-center justify-between'>
+              <Link href='/'>
+                <img className='h-14' src='/../../icons/logo.png'/>
+              </Link>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                placement="bottomRight"
+                >
+                <AiOutlineMenu/>
+              </Dropdown>
             </div>
            </div>
 

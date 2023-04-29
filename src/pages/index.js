@@ -3,6 +3,9 @@ import { Inter } from '@next/font/google'
 import Navbar from '@/components/Navbar'
 import SliderHome from '@/components/Sliders/home'
 import Section from '@/components/Section'
+import Footer from '@/components/Footer'
+import HomeComp from '@/components/Home'
+import SecComp from '@/components/Home/sec'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,10 +18,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className='bg-gray-100'>
+      <div className=''>
         <Navbar/>
-        <SliderHome/>
+        <HomeComp/>
+        {/* <SliderHome/> */}
         <Section/>
+        <SecComp/>
+          {/* <img className='w-full' src='/../../background/cargo.png'/> */}
+        <Footer/>
       </div>
     </>
   )
