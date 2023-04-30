@@ -4,23 +4,28 @@ import {IoIosArrowDown} from 'react-icons/io'
 import Link from 'next/link'
 import CargoCard from '@/components/Cards/cargo'
 import axios from 'axios'
-import { cargostatus, filtersAllCargo } from '@/url/uri'
+import { filtersAllCargo } from '@/url/uri'
+import FooterWhite from '@/components/Footer/white'
+import { Spin } from 'antd'
 
 const All = () => {
     const [cargo, setCargo] = useState([]);
     const [nation, setNation] = useState([]);
     const [type, setType] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         loadProfile();
       }, [nation, type]);
 
     const loadProfile = async() => {
-        console.log(type)
+        setLoading(true)
         try{
             const res = await axios.post(filtersAllCargo, {nation: nation, type: type });
+            setLoading(false)
             setCargo(res.data.cargo)
         }catch(err){
+            setLoading(false)
             console.log(err)
         }
     }
@@ -160,12 +165,26 @@ const All = () => {
                                         <h1 className='py-2'>Хамгийн олон одтой</h1>
                                     </div> */}
                                 </div>
+                                {
+                                    loading?
+                                    <div className='flex justify-center items-center mt-20'>
+                                        <Spin/>
+                                        <h1 className='mb-2 ml-4'>Уншиж байна...</h1>
+                                    </div>
+                                    :
+                                    ""
+                                }
 
                                 <div className='grid xl:grid-cols-3 md:grid-cols-2 gap-2'>
                                     {
                                         cargo.map((item, index) => {
                                         return(
-                                            <CargoCard key={index} data={item}/>
+                                            <>
+                                            {
+                                                !loading&&
+                                                <CargoCard key={index} data={item}/>
+                                            }
+                                            </>
                                         )
                                         })
                                     }
@@ -177,6 +196,7 @@ const All = () => {
                 </div>
             </div>
         </div>
+        <FooterWhite/>
     </div>
   )
 }
