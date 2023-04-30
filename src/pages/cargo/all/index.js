@@ -45,7 +45,7 @@ const All = () => {
         }
     }
   return (
-    <div className='bg-gray-100 h-screen'>
+    <div className='bg-gray-100 h-full'>
         <Navbar/>
         <div className=''>
             <div className='w-full xs:block md:container mt-4'>
