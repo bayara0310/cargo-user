@@ -85,6 +85,16 @@ const Slug = () => {
     }
     
     const haha = async() => {
+      if(!isAuth()){
+            return toast({
+              title: 'Уучлаарай',
+              description: "Та нэвтэрч орсноор үнэлгээ өгөх боломжтой.",
+              status: 'warning',
+              duration: 7000,
+              isClosable: true,
+              position: "top"
+            })
+      }
       try{
           const res = await axios.post(ratinguri, { userid: isAuth()?._id, cargoid: cargo._id, rating: value})
           console.log(res.status)
