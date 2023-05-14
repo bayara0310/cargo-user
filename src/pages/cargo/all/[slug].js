@@ -1,7 +1,7 @@
 import CargoComment from '@/components/Comment/cargoComment'
 import Navbar from '@/components/Navbar'
 import CargoOrderCard from '@/components/Sliders/cargoOrdersCard'
-import { cargoone, commentCargoUri, commentadduri, ratinguri } from '@/url/uri'
+import { cargoone, commentCargoUri, commentadduri, ratinguri, sitess } from '@/url/uri'
 import { AspectRatio, Button, Spinner, Textarea, useToast } from '@chakra-ui/react'
 import { Rate } from 'antd'
 import axios from 'axios'
@@ -24,6 +24,7 @@ const Slug = () => {
     const [ip, setIp] = useState("");
     const toast = useToast();
     const [value, setValue] = useState(0);
+    const [site, setSite] = useState([])
 
     useEffect(() => {
         loadProfile();
@@ -41,6 +42,8 @@ const Slug = () => {
         try{
             const res = await axios.get(cargoone + `${url}`)
             const resdata = await axios.get(commentCargoUri + `${url}`)
+            const ress = await axios.post(sitess, {sites: res.data.sites})
+            setSite(ress.data)
             setCargo(res.data)
             setAllcom(resdata.data.cargo);
         }catch(err){
@@ -156,7 +159,7 @@ const Slug = () => {
 
                        <div className='flex items-center'>
                         <CiLocationOn size={18}/>
-                        <h1 className='ms ml-2 font-semibold'>Хаяг {':'}</h1>
+                        <h1 className='ms ml-2 font-semibold'>Хаяг</h1>
                         <p className='ml-2'>Баруун 4 зам модны 2 т</p>
                        </div>
 
@@ -174,7 +177,7 @@ const Slug = () => {
 
                        <div>
                         <h1 className='ms ml-2 font-semibold mb-2 mt-4'>Захиалга авах боломжтой сайтууд :</h1>
-                        <CargoOrderCard/>
+                        <CargoOrderCard data={site}/>
                        </div>
 
                       </div>

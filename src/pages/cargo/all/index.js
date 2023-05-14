@@ -7,12 +7,14 @@ import axios from 'axios'
 import { filtersAllCargo } from '@/url/uri'
 import FooterWhite from '@/components/Footer/white'
 import { Spin } from 'antd'
+import { countrylists } from '../../../url/uri'
 
 const All = () => {
     const [cargo, setCargo] = useState([]);
     const [nation, setNation] = useState([]);
     const [type, setType] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [country, setCountry] = useState([]);
 
     useEffect(() => {
         loadProfile();
@@ -22,8 +24,12 @@ const All = () => {
         setLoading(true)
         try{
             const res = await axios.post(filtersAllCargo, {nation: nation, type: type });
-            setLoading(false)
+            console.log(res.data)
+            const ress = await axios.get(countrylists);
+            setCountry(ress.data);
             setCargo(res.data.cargo)
+
+            setLoading(false)
         }catch(err){
             setLoading(false)
             console.log(err)
@@ -66,16 +72,22 @@ const All = () => {
                                     </div>
 
                                     <div className='ml-8 mt-4 text-ms'>
-                                        <div className='flex items-center'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={nation.includes("CHINA")}
-                                                onChange={() => nationset("CHINA")}
-                                                />
-                                           <h1 className='ml-2'>Хятад</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
+                                        {
+                                            country.map((i, index) => {
+                                                return(
+                                                    <div key={index} className='flex items-center mt-2'>
+                                                        <input
+                                                                className='cursor-pointer'
+                                                                type="checkbox"
+                                                                checked={nation.includes(i._id)}
+                                                                onChange={() => nationset(i._id)}
+                                                                />
+                                                        <h1 className='ml-2'>{i.name}</h1>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        {/* <div className='flex items-center mt-2'>
                                            <input
                                                 className='cursor-pointer'
                                                 type="checkbox"
@@ -101,7 +113,7 @@ const All = () => {
                                                 onChange={() => nationset("KOR")}
                                                 />
                                            <h1 className='ml-2'>Солонгос</h1>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <div className='bg-gray-100 rounded py-2 w-full flex items-center justify-between mt-4'>

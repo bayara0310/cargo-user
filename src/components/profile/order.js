@@ -97,11 +97,11 @@ const loadProfile = async() => {
                   <Thead bgColor='gray.100'>
                     <Tr>
                       <Th>Барааны төрөл</Th>
+                      <Th>Трак код</Th>
                       <Th>Линк</Th>
                       {/* <Th>Өнгө</Th>
                       <Th>Хэмжээ</Th> */}
                       <Th>Тоо</Th>
-                      <Th>Үнэ</Th>
                       <Th>Огноо</Th>
                       <Th>төлбөр</Th>
                       <Th></Th>
@@ -114,6 +114,12 @@ const loadProfile = async() => {
                         return(
                         <Tr key={index} fontSize='sm'>
                           <Td>{order.type}</Td>
+                          {
+                            order?.trackCode ?
+                            <Td>{order.trackCode}</Td>
+                            :
+                            <Td>Код үүсээгүй байна</Td>
+                          }
                           <Td>
                             <div className='flex justify-between items-center'>
                               {order.link.slice(0, 18)} ...
@@ -142,7 +148,6 @@ const loadProfile = async() => {
                           <Td>{order.number}</Td>
                           <Td>{order.price}</Td>
                           <Td>{moment(order.date).format("L")}</Td>
-                          <Td>{order.price}</Td>
                           <Td>
                             {
                               order.status === BARAA.REGISTERED&&

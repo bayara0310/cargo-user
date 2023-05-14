@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { message, Steps, theme } from 'antd';
+import { message, Steps,Select, theme } from 'antd';
 import { useState } from 'react';
 import { Button, Input } from '@chakra-ui/react';
 import LinkCopy from './getOrderItems/linkCopyModal';
 import axios from 'axios';
-import { orderadduri, cargostatus } from '@/url/uri';
+import { orderadduri, cargostatus, cargostatus1 } from '@/url/uri';
 import { isAuth } from 'context/AuthContext';
 const steps = [
   {
@@ -19,15 +19,24 @@ const Getorder = () => {
     const [current, setCurrent] = useState(0);
     const [data, setData]= useState({type:"", link:"", cargoid:"", size:"",color:"", price:"", number:"", userid:isAuth()?._id, date: new Date() })
     const [cargos, setCargos] = useState([]);
+    const { Option } = Select;
 
     useEffect(() => {
-        loadProfile();
-      }, []);
+        if(data.link == ""){
+            return
+        }else{
+            loadProfile();
+        }
+    }, [data.link]);
 
     const loadProfile = async() => {
+        console
         try{
-            const res = await axios.post(cargostatus, {cargo_status:"APPROVED"})
-            setCargos(res.data.data);
+            const ress = await axios.post(cargostatus1)
+            const link = "https://world.taobao.com/w/womens-jordan-clothing-37eefz5e1x6z6ymx6/";
+            const array =  ress?.data?.data.filter((el) =>el.sites.some((site) =>data.link.includes(site.link)))
+            setCargos(array);
+            console.log(array)
         }catch(err){
             console.log(err);
         }
@@ -37,13 +46,15 @@ const Getorder = () => {
         console.log(data);
         try{
             const res = await axios.post(orderadduri, data)
-            console.log(res)
             message.success('Захиалга үүслээ та төлбөрөө төлснөөр захиалга баталгаажих болно !')
         }catch(err){
             console.log(err)
         }
     }
 
+    function handleCargoSelect(value) {
+        setData({...data, cargoid:value})
+      }
 
     const next = () => {
       setCurrent(current + 1);
@@ -80,14 +91,17 @@ const Getorder = () => {
                         </div>
                         <div className='mt-4'>
                             <h1 className='text-lg mt-2'>Карго сонгох</h1>
-                            <select  defaultValue="Карго сонгох" className='w-full rounded outline-none ring-1 py-2 text-sm mt-1'
-                            onChange={(e) => setData({...data, cargoid:e.target.value})}>
-                                {
-                                    cargos.map((item, index) => (
-                                        <option key={index} className='py-1 text-sm' value={item._id}>{item.cargo_name}</option>
-                                    ))
-                                }
-                            </select>
+                            <Select
+                                placeholder="Карго сонгох"
+                                className="w-full"
+                                onChange={handleCargoSelect}
+                                >
+                                {cargos.map((item) => (
+                                    <Option key={item.cargo._id} value={item.cargo._id || ''}>
+                                      {item.cargo.cargo_name}
+                                    </Option>
+                                ))}
+                            </Select>
                         </div>
                     </div>
                 }

@@ -2,6 +2,7 @@ const mainUrl = "http://localhost:8000";
 
 export const cargoall = mainUrl + "/api/cargo/all";
 export const cargostatus = mainUrl + "/api/cargo/status";
+export const cargostatus1 = mainUrl + "/api/cargo/status1";
 export const cargoone = mainUrl + "/api/cargo/";
 export const cargoadd = mainUrl + "/api/cargo/add";
 
@@ -17,6 +18,7 @@ export const commentUserFindUri = mainUrl + "/api/comment/user/find/";
 export const filtersAllCargo = mainUrl + "/api/cargo/filter/typen"
 export const ratinguri = mainUrl + "/api/rating/add"
 export const ratinguriget = mainUrl + "/api/rating/"
+export const sitess = mainUrl + "/api/cargo/sites/"
 
 
 export const TYPES = {
@@ -41,3 +43,13 @@ export const BARAA = {
     CAME: "CAME",  //irsen
     CONFIRM: "CONFIRM",  //huleej awsan
 }
+
+
+
+
+export const siteadduri = mainUrl + "/api/sites/add";
+export const allsites = mainUrl + "/api/sites/all";
+export const addallsites = mainUrl + "/api/sites/cargo/add/";
+
+export const countryadduri = mainUrl + "/api/country/add";
+export const countrylists = mainUrl + "/api/country/all";
