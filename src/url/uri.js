@@ -20,6 +20,8 @@ export const filtersAllCargo = mainUrl + "/api/cargo/filter/typen"
 export const ratinguri = mainUrl + "/api/rating/add"
 export const ratinguriget = mainUrl + "/api/rating/"
 export const sitess = mainUrl + "/api/cargo/sites/"
+export const signinuri = mainUrl + "/api/signin"
+export const signupuri = mainUrl + "/api/signup"
 
 
 export const TYPES = {

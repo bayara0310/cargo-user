@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import {MdKeyboardArrowLeft} from 'react-icons/md'
 import axios from 'axios'
 import { authenticate, isAuth } from 'context/AuthContext'
+import { signinuri } from '@/url/uri'
 
 const Signin = () => {
   const router = useRouter();
@@ -40,7 +41,7 @@ const Signin = () => {
     const password = values.password
     axios({
       method: 'POST',
-      url: `http://localhost:8000/api/signin`,
+      url: signinuri,
       data: { email, password}
     })
     .then(response=>{

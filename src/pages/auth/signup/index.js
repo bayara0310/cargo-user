@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {MdKeyboardArrowLeft} from 'react-icons/md'
 import axios from 'axios'
+import { signupuri } from '@/url/uri';
 
 const Signup = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const Signup = () => {
 
   const onSubmit = async values => {
     try{
-      const res = await axios.post(`http://localhost:8000/api/signup`, values)
+      const res = await axios.post(signupuri, values)
       console.log(res)
       if(res.status === 200){
         setMessage(res.data.message)
