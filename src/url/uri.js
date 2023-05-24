@@ -1,4 +1,5 @@
-const mainUrl = "http://localhost:8000";
+// const mainUrl = "http://localhost:8000";
+const mainUrl = "https://cargo-backend.vercel.app";
 
 export const cargoall = mainUrl + "/api/cargo/all";
 export const cargostatus = mainUrl + "/api/cargo/status";
