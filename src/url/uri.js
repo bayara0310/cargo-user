@@ -23,6 +23,8 @@ export const sitess = mainUrl + "/api/cargo/sites/"
 export const signinuri = mainUrl + "/api/signin"
 export const signupuri = mainUrl + "/api/signup"
 
+export const useruri = mainUrl + "/api/user/"
+
 
 export const TYPES = {
     AGAAR: "AIR",

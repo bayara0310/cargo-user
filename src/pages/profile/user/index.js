@@ -3,7 +3,7 @@ import Comments from '@/components/profile/comments';
 import Getorder from '@/components/profile/getorder';
 import My from '@/components/profile/my';
 import Order from '@/components/profile/order';
-import { userorderall } from '@/url/uri';
+import { userorderall, useruri } from '@/url/uri';
 import { Avatar } from '@chakra-ui/react'
 import axios from 'axios';
 import { getCookie, isAuth, signout } from 'context/AuthContext';
@@ -34,7 +34,7 @@ const User = () => {
       const loadProfile = () => {
         axios({
           method: 'GET',
-          url: `http://localhost:8000/api/user/${isAuth()?._id}`,
+          url: useruri + `${isAuth()?._id}`,
           headers: {
             Authorization: `Bearer ${token}`
           }
