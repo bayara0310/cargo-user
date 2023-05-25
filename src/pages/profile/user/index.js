@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar'
 import Comments from '@/components/profile/comments';
 import Getorder from '@/components/profile/getorder';
@@ -66,9 +67,9 @@ const User = () => {
       const { name, email, password, buttonText, role } = values;
 
   return (
-    <div className='bg-gray-100 h-screen'>
+    <div className='bg-gray-100 h-[100vh]'>
         <Navbar/>
-        <div className='xs:block md:container'>
+        <div className='xs:block md:container mb-10'>
         <div className='grid xl:grid-cols-4 md:grid-cols-1 sm:grid-cols-1 xs:grid-cols-1'>
             <div className='grid col-span-1 m-2'>
                 <div className='bg-white w-full rounded shadow-md'>
@@ -146,6 +147,7 @@ const User = () => {
             </div>
         </div>
         </div>
+        <Footer/>
     </div>
   )
 }

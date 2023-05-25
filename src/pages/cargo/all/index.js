@@ -178,7 +178,7 @@ const All = () => {
                                     ""
                                 }
 
-                                <div className='grid xl:grid-cols-3 md:grid-cols-2 gap-2'>
+                                <div className='grid xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-2'>
                                     {
                                         cargo.map((item, index) => {
                                         return(

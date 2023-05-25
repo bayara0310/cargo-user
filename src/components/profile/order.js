@@ -48,7 +48,7 @@ const loadProfile = async() => {
       <OrderHeader/>
 
       <div className='flex justify-between flex-wrap'>
-        <div className='flex mt-4'>
+        <div className='flex mt-4 xs:text-sm md:text-lg'>
           <div onClick={() => setRoute(false)} className={route== false ?'mx-2 border-b-2 font-semibold pb-2 border-gray-800 cursor-pointer':'mx-2 border-b-2 pb-2 border-gray-100 hover:border-gray-800 hover:font-semibold cursor-pointer'}>
             <h1>Бүгд</h1>
           </div>

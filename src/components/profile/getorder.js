@@ -129,14 +129,14 @@ const Getorder = () => {
                 
             </div>
             <div
-            className=''
+            className='flex justify-end'
                 style={{
                 marginTop: 24,
                 }}
             >
                 {current < steps.length - 1 && (
                 <Button type="primary" onClick={() => next()}>
-                    Дараагийх
+                    Дараах
                 </Button>
                 )}
                 {current === steps.length - 1 && (

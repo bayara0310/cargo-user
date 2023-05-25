@@ -35,7 +35,7 @@ const CargoCard = ({data}) => {
 
 
   return (
-    <div className='group flex justify-center'>
+    <div className='group flex justify-center md:mx-0 xs:mx-8'>
         <div className='rounded-xl bg-white w-full mt-4 group-hover:shadow-2xl'>
             <div>
                 <img className='rounded-t w-full h-40' src={data.cover_image}/>
