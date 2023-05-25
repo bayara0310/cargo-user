@@ -111,11 +111,9 @@ const Signup = () => {
       });
   };
 
-
-
   return (
-    <div className=' bg-earth1 bg-opacity-25 bg-cover bg-center w-full h-screen mx-auto p-2'>
-      <div className='flex justify-between  mx-16'>
+    <div className=' bg-earth1 bg-opacity-25 bg-cover bg-center w-full xs:h-full md:h-screen mx-auto p-2'>
+      <div className='flex justify-between xs:mx-4 md:mx-16'>
         <Link href='/'>
           <img className='h-16' src='/../../icons/logowhite.png'/>
         </Link>
@@ -131,17 +129,20 @@ const Signup = () => {
           </div>
         </div>
       </div>
-     <div className='grid grid-cols-2'>
+     <div className='grid xs:grid-cols-1 md:grid-cols-2 xs:mx-4 md:mx-0'>
 
       <div className='grid col-span-1'>
-         <div className='flex items-center justify-center'>
+         <div className='flex items-center justify-center flex-wrap'>
             <div className=''>
                 <div className=''>
                   <p className=' text-gray-300 mt-6'>E-CARGO ALL IN CARGO SERVICE</p>
-                  <h1 className='text-white font-semibold text-4xl '>Өөрийн каргогоо</h1>
-                  <h1 className='text-white font-semibold text-4xl'>бүртгүүлэх</h1>
-                  <p className=' text-gray-300 mt-6'>Та манай платформыг ашиглан 2 минутын дотор өөрийн каргогоо</p>
-                  <p className=' text-gray-300'>бүртгүүлж захиалга, агуулах, төлбөр, хүргэлтээ автоматжуулаарай.</p>
+                  <h1 className='text-white font-semibold xs:text-2xl md:text-4xl '>Өөрийн каргогоо</h1>
+                  <h1 className='text-white font-semibold xs:text-2xl md:text-4xl'>бүртгүүлэх</h1>
+                  <div className='xs:text-sm md:text-lg'>
+                  <p className='whitespace text-gray-300 xs:mt-2 md:mt-6'>Та манай платформыг ашиглан 2 минутын дотор өөрийн каргогоо</p>
+                  <p className='whitespace text-gray-300'>бүртгүүлж захиалга, агуулах, төлбөр, хүргэлтээ автоматжуулаарай.</p>
+                  </div>
+                  <div className='hidden md:block'>
                   <div className='mt-10 flex'>
                     <Button colorScheme='blue' textColor='white' bgColor='indigo'>
                       <BsCloudDownload className='mx-2'/>
@@ -152,6 +153,7 @@ const Signup = () => {
                       <AiOutlineDownload color='white' className='mx-2'/>
                       Гарын авлага татах
                     </Button>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -193,7 +195,8 @@ const Signup = () => {
                             onChange={e=> setData({...data, phone_number: e.target.value})}/>
                           </InputGroup>
 
-                        <div className='flex mt-4'>
+                        <div className=''>
+                        <div className='flex mt-4 flex-wrap'>
                             <div className="relative">
                               <input
                                 placeholder="Image"
@@ -221,12 +224,13 @@ const Signup = () => {
                               />
                               <Button
                                 size="sm"
-                                className="z-0 mt-2 ml-2"
+                                className="z-0 mt-2 xs:ml-0 md:ml-2"
                               >
                                 <BsCloudDownload className='mx-2'/>
                                 Ковер зураг оруулах
                               </Button>
                             </div>
+                        </div>
                         </div>
 
                           {

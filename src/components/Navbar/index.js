@@ -52,6 +52,14 @@ const Navbar = () => {
       </div>
     ),
   },
+  {
+    key: '5',
+    label: (
+      <div>
+        <Link href='/cargo/signup'>Каргогоо бүртгүүлэх</Link>
+      </div>
+    ),
+  },
 
 ];
 

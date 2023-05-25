@@ -1,4 +1,5 @@
 import CargoComment from '@/components/Comment/cargoComment'
+import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import CargoOrderCard from '@/components/Sliders/cargoOrdersCard'
 import { cargoone, commentCargoUri, commentadduri, ratinguri, sitess } from '@/url/uri'
@@ -127,10 +128,13 @@ const Slug = () => {
   return (
     <div className='bg-gray-100 h-full'>
       <Navbar/>
-      <div className='sm:block md:container py-4'>
-          <div className='grid md:grid-cols-5 sm:grid-cols-1'>
+      <div className='xs:block md:container py-4'>
+        <div className='mb-2'>
+          <Link href='/cargo/all' className=''>{'< Буцах'}</Link>
+        </div>
+          <div className='grid xs:grid-cols-1 md:grid-cols-5'>
 
-            <div className='grid md:col-span-3 sm:col-span-1'>
+            <div className='grid md:col-span-3 xs:col-span-1'>
               <div>
                 <div className='bg-white w-full rounded-sm shadow-sm pb-20'>
                   <div className='flex p-4 justify-center'>
@@ -144,7 +148,7 @@ const Slug = () => {
               </div>
             </div>
 
-            <div className='grid md:col-span-2 sm:grid-cols-1'>
+            <div className='grid xs:grid-cols-1 md:col-span-2'>
              <div>
               {/* aldaatai heseg */}
                 <div className='bg-white w-full rounded-sm xs:mt-4 md:mt-0'>
@@ -203,8 +207,10 @@ const Slug = () => {
             
           </div>
 
-          <div className='flex '>
-            <div className='bg-white w-full rounded mt-4'>
+          <div className='grid xs:grid-cols-1 md:grid-cols-2'>
+            <div>
+              <div className='grid col-span-1'>
+              <div className='bg-white w-full rounded mt-4'>
               <div className='p-4'>
                 <h1 className='text-xl font-semibold'>Сэтгэгдэл бичих</h1>
                 <div className='mt-4 border-t'>
@@ -219,35 +225,39 @@ const Slug = () => {
                 </div>
               </div>
             </div>
-            <div className='bg-white rounded w-full mt-4'>
-              <div className='p-4'>
-                <h1 className='text-xl font-semibold'>Сэтгэгдлүүд</h1>
-                <div className='mt-4 border-t'>
-                  {
-                    allcom.map((data, index) => {
-                      return(
-                        <CargoComment key={index} data={data}/>
-                      )
-                    })
-                  }
+              </div>
+            </div>
+              <div className='grid col-span-1'>
+                <div className='bg-white rounded w-full mt-4'>
+                  <div className='p-4'>
+                    <h1 className='text-xl font-semibold'>Сэтгэгдлүүд</h1>
+                    <div className='mt-4 border-t'>
+                      {
+                        allcom.map((data, index) => {
+                          return(
+                            <CargoComment key={index} data={data}/>
+                          )
+                        })
+                      }
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
             {/* map heseg */}
             
           <div className='my-4'>
             <div>
-            <AspectRatio ratio={16 / 9} className='h-96'>
+            <AspectRatio ratio={16 / 9} className='h-full'>
               <iframe
                 src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng'
               />
             </AspectRatio>
             </div>
           </div>
-
         </div>
+        <Footer/>
     </div>
   )
 }

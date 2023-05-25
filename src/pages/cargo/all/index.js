@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar'
 import React, { useEffect, useState } from 'react'
-import {IoIosArrowDown} from 'react-icons/io'
+import {IoIosArrowDown, IoIosArrowUp} from 'react-icons/io'
 import Link from 'next/link'
 import CargoCard from '@/components/Cards/cargo'
 import axios from 'axios'
@@ -15,6 +15,9 @@ const All = () => {
     const [type, setType] = useState([]);
     const [loading, setLoading] = useState(false);
     const [country, setCountry] = useState([]);
+
+    const [natDrop, setNatDrop] = useState(true);
+    const [typeDrop, setTypeDrop] = useState(false);
 
     useEffect(() => {
         loadProfile();
@@ -63,105 +66,93 @@ const All = () => {
                 <Link href='/' className='text-sm mx-2 text-gray-700'>Нүүр {'>'} Бүх карго</Link>
                 <div className='mt-4'>
                     <div className='grid md:grid-cols-4 xs:grid-cols-1'>
-                        <div className='grid col-span-1 mx-2'>
-                            <div className='rounded-sm ring-[0.5px] ring-gray-300 bg-white w-full h-96'>
-                                <div className='p-4'>
+                        <div>
+                            <div className='grid col-span-1 mx-2'>
+                                <div>
+                                    <div className='rounded-sm ring-[0.5px] ring-gray-300 bg-white w-full h-full'>
+                                        <div className='p-4'>
 
-                                    <div className='bg-gray-100 rounded py-2 w-full'>
-                                       <h1 className='ml-4 font-semibold'>Улсууд</h1>
+                                            <div onClick={ e=> setNatDrop(!natDrop)} className='bg-gray-100 px-4 rounded py-2 w-full flex justify-between items-center cursor-pointer hover:bg-gray-200'>
+                                            <h1 className='font-semibold'>Улсууд</h1>
+                                            {
+                                                natDrop?
+                                                <IoIosArrowUp/>
+                                                :
+                                                <IoIosArrowDown/>
+                                            }
+                                            </div>
+
+                                            <div className={natDrop? 'ml-8 mt-4 text-ms':'ml-8 mt-4 text-ms hidden'}>
+                                                {
+                                                    country.map((i, index) => {
+                                                        return(
+                                                            <div key={index} className='flex items-center my-2'>
+                                                                <input
+                                                                        className='cursor-pointer'
+                                                                        type="checkbox"
+                                                                        checked={nation.includes(i._id)}
+                                                                        onChange={() => nationset(i._id)}
+                                                                        />
+                                                                <h1 className='ml-2'>{i.name}</h1>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+
+                                            <div onClick={() => setTypeDrop(!typeDrop)} className='bg-gray-100 px-4 rounded py-2 w-full flex items-center justify-between mt-2 cursor-pointer hover:bg-gray-200'>
+                                            <h1 className='font-semibold'>Ангилал</h1>
+                                            {
+                                                typeDrop?
+                                                <IoIosArrowUp/>
+                                                :
+                                                <IoIosArrowDown/>
+                                            }
+                                            </div>
+                                            
+                                            <div className={typeDrop?'ml-8 mt-4 text-ms':'ml-8 mt-4 text-ms hidden'}>
+
+                                                <div className='flex items-center'>
+                                                <input
+                                                        className='cursor-pointer'
+                                                        type="checkbox"
+                                                        checked={type.includes("RAILROAD")}
+                                                        onChange={() => typeset("RAILROAD")}
+                                                        />
+                                                <h1 className='ml-2'>Төмөр зам</h1>
+                                                </div>
+                                                <div className='flex items-center mt-2'>
+                                                <input
+                                                        className='cursor-pointer'
+                                                        type="checkbox"
+                                                        checked={type.includes("AIR")}
+                                                        onChange={() => typeset("AIR")}
+                                                        />
+                                                <h1 className='ml-2'>Агаарын</h1>
+                                                </div>
+                                                <div className='flex items-center mt-2'>
+                                                <input
+                                                        className='cursor-pointer'
+                                                        type="checkbox"
+                                                        checked={type.includes("LAND")}
+                                                        onChange={() => typeset("LAND")}
+                                                        />
+                                                <h1 className='ml-2'>Газрын</h1>
+                                                </div>
+                                                <div className='flex items-center mt-2'>
+                                                <input
+                                                        className='cursor-pointer'
+                                                        type="checkbox"
+                                                        checked={type.includes("WATER")}
+                                                        onChange={() => typeset("WATER")}
+                                                        />
+                                                <h1 className='ml-2'>Усан тээвэр</h1>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
-
-                                    <div className='ml-8 mt-4 text-ms'>
-                                        {
-                                            country.map((i, index) => {
-                                                return(
-                                                    <div key={index} className='flex items-center mt-2'>
-                                                        <input
-                                                                className='cursor-pointer'
-                                                                type="checkbox"
-                                                                checked={nation.includes(i._id)}
-                                                                onChange={() => nationset(i._id)}
-                                                                />
-                                                        <h1 className='ml-2'>{i.name}</h1>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                        {/* <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={nation.includes("USA")}
-                                                onChange={() => nationset("USA")}
-                                                />
-                                           <h1 className='ml-2'>Америк</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={nation.includes("GER")}
-                                                onChange={() => nationset("GER")}
-                                                />
-                                           <h1 className='ml-2'>Герман</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={nation.includes("KOR")}
-                                                onChange={() => nationset("KOR")}
-                                                />
-                                           <h1 className='ml-2'>Солонгос</h1>
-                                        </div> */}
-                                    </div>
-
-                                    <div className='bg-gray-100 rounded py-2 w-full flex items-center justify-between mt-4'>
-                                       <h1 className='ml-4 font-semibold'>Ангилал</h1>
-                                       {/* <IoIosArrowDown className='mr-2'/> */}
-                                    </div>
-                                    
-                                    <div className='ml-8 mt-4 text-ms'>
-
-                                        <div className='flex items-center'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={type.includes("RAILROAD")}
-                                                onChange={() => typeset("RAILROAD")}
-                                                />
-                                           <h1 className='ml-2'>Төмөр зам</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={type.includes("AIR")}
-                                                onChange={() => typeset("AIR")}
-                                                />
-                                           <h1 className='ml-2'>Агаарын</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={type.includes("LAND")}
-                                                onChange={() => typeset("LAND")}
-                                                />
-                                           <h1 className='ml-2'>Газрын</h1>
-                                        </div>
-                                        <div className='flex items-center mt-2'>
-                                           <input
-                                                className='cursor-pointer'
-                                                type="checkbox"
-                                                checked={type.includes("WATER")}
-                                                onChange={() => typeset("WATER")}
-                                                />
-                                           <h1 className='ml-2'>Усан тээвэр</h1>
-                                        </div>
-
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
