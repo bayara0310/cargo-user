@@ -3,6 +3,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/router'
 import { Button, useToast } from '@chakra-ui/react'
+import { activateuri } from '@/url/uri'
 
 const Activate = () => {
   const router = useRouter()
@@ -20,7 +21,7 @@ const Activate = () => {
 
     axios({
       method: 'POST',
-      url: `http://localhost:8000/api/account-activation`,
+      url: activateuri,
       data: {token: tokens} 
     })
     .then(response=>{

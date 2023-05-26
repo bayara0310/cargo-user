@@ -24,6 +24,7 @@ export const signinuri = mainUrl + "/api/signin"
 export const signupuri = mainUrl + "/api/signup"
 
 export const useruri = mainUrl + "/api/user/"
+export const activateuri = mainUrl + "/api/account-activation"
 
 
 export const TYPES = {
